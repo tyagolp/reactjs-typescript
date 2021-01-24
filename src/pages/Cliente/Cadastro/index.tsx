@@ -15,7 +15,6 @@ import getValidationsErrors from '../../../utils/getValidationsErrors'
  import {cliente} from '../All'
  import Input from '../../../components/Input'
  import Button from '../../../components/Button'
-import { string } from 'yup/lib/locale';
 
 const ClienteCadastro: React.FC = () => {
 
