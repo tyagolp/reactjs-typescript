@@ -6,8 +6,8 @@ import { Switch, Route } from 'react-router-dom';
 
 const Routes: React.FC = () => (
     <Switch>
-        <Route path="/" exact component={Cadastro} />
-        <Route path="/all" exact component={All} />
+        <Route path="/" exact component={All} />
+        <Route path="/cadastro" exact component={Cadastro} />
     </Switch>
 )
 

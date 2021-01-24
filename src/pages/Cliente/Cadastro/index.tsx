@@ -30,17 +30,15 @@ const ClienteCadastro: React.FC = () => {
     useEffect(()=>{   
 
         async function loadData() {
-            console.log(id);
             if(id){
                 const {data} = await api.get(`cliente/${id}`);
-                console.log(data);
                 if(data.length > 0){
                     setClientes(data[0]);
                 } 
             }
         }
         loadData();        
-    },[]);
+    }, [id]);
 
 
     const handleSubmit = useCallback( async (data: cliente) =>{
@@ -65,9 +63,7 @@ const ClienteCadastro: React.FC = () => {
                 abortEarly: false
             });
             if(id){
-                data.id = id?.toString()                
-                console.log('update')
-                console.log(data)
+                data.id = id?.toString()   
                 await api.put('cliente', data);   
                 
                 addToast({
@@ -76,8 +72,6 @@ const ClienteCadastro: React.FC = () => {
                 });
             }
             else{       
-                console.log('insert')
-                console.log(data)
                 await api.post('cliente', data);            
                 addToast({
                     type:'success',
@@ -86,7 +80,7 @@ const ClienteCadastro: React.FC = () => {
             }           
 
             setTimeout(() =>{
-                history.push('/all');                
+                history.push('/');                
             },2000)
         } catch (err) {   
             if(err instanceof Yup.ValidationError){
@@ -101,7 +95,7 @@ const ClienteCadastro: React.FC = () => {
                 });
             }        
         }
-    }, [])
+    }, [ addToast, history, id])
     
     return (
         <Content>
@@ -122,7 +116,7 @@ const ClienteCadastro: React.FC = () => {
                 <Input name="complemento" type="text" icon={FiItalic} placeholder="Complemento" />
 
                 <ContentAlignBetween>
-                    <Link to="/all">
+                    <Link to="/">
                         <FiArrowLeftCircle size={20} />
                         Voltar
                     </Link>

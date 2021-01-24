@@ -50,31 +50,26 @@ const All: React.FC = () => {
             
             addToast({
                 type:'success',
-                title: 'Cliente removido com sucesso!',
-                //description: 'Ocorreu o erro ao fazer o login'
+                title: 'Cliente removido com sucesso!'
             }); 
         } catch (error) {
             addToast({
                 type:'error',
                 title: 'Falha ao remover o cliente!',
                 description: error.message
-            }); 
-            
+            });             
         }
-
-
-
-    },[]);
+    },[addToast]);
     const handleEditCliente = useCallback((id:string)=>{
-        history.push(`/?id=${id}`)
-    },[]);
+        history.push(`/cadastro?id=${id}`)
+    },[history]);
     
   return (
     <Container >
         <div>
             <h1>Lista de Cliente</h1>
             <ContentAlignRigth>
-                <Link to="/">
+                <Link to="/cadastro">
                     <FiPlusCircle size={20} />
                     Novo
                 </Link>
