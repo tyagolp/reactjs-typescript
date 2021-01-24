@@ -1,16 +1,18 @@
 import React from 'react';
+import { BrowserRouter  } from 'react-router-dom'
 
-import ClienteCadastro from './pages/Cliente/Cadastro'
+import Routes from './routes'
 import GlobalStyle from './styles/global'
 import AppProvider from './hook'
 
 const App: React.FC = () => (
-  <>
+  <BrowserRouter>
     <AppProvider>
-        <ClienteCadastro />
-        <GlobalStyle />
+        <Routes />
     </AppProvider>
-  </>
+    
+    <GlobalStyle />
+  </BrowserRouter>
 );
 
 export default App;

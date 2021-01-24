@@ -1,14 +1,15 @@
 import React, { useCallback, useRef } from 'react';
-import { FiUser, FiKey, FiItalic, FiMail, FiPhone, FiMap } from 'react-icons/fi'
+import { FiUser, FiKey, FiItalic, FiMail, FiPhone, FiMap, FiCheckCircle, FiArrowLeftCircle } from 'react-icons/fi'
 import { Form } from '@unform/web'
 import { FormHandles } from '@unform/core'
 import * as Yup from 'yup'
+import { Link, useHistory } from 'react-router-dom'
 
 import api from '../../../services/api'
 import { useToast } from '../../../hook/toast'
 import getValidationsErrors from '../../../utils/getValidationsErrors'
 
- import { Container, Content } from './styles';
+ import { Content, ContentAlignBetween } from './styles';
 
  import Input from '../../../components/Input'
  import Button from '../../../components/Button'
@@ -16,6 +17,7 @@ import getValidationsErrors from '../../../utils/getValidationsErrors'
 const ClienteCadastro: React.FC = () => {
 
     const formRef = useRef<FormHandles>(null);
+    const history = useHistory();
 
     const { addToast } = useToast()
 
@@ -41,25 +43,33 @@ const ClienteCadastro: React.FC = () => {
                 abortEarly: false
             });
             
-
             await api.post('cliente', data);
 
-        } catch (err) {
+            addToast({
+                type:'success',
+                title: 'Cadastro efetuado com sucesso!',
+                //description: 'Ocorreu o erro ao fazer o login'
+            });
+
+            setTimeout(() =>{
+                history.push('/all');                
+            },2000)
+        } catch (err) {   
             if(err instanceof Yup.ValidationError){
                 const errors = getValidationsErrors(err)         
                 formRef.current?.setErrors(errors);
             }
+                   
+            addToast({
+                type:'error',
+                title: 'Erro ao tentar cadastrar o cliente!',
+                //description: 'Ocorreu o erro ao fazer o login'
+            });
         }
 
-        addToast({
-            type:'error',
-            title: 'Erro na authenticação',
-            description: 'Ocorreu o erro ao fazer o login'
-        });
     }, [])
     
     return (
-    <Container>
         <Content>
             <Form ref={formRef} initialData={{}} onSubmit={handleSubmit}>
                 <h1>Cadastro de Cliente</h1>
@@ -77,12 +87,21 @@ const ClienteCadastro: React.FC = () => {
                 <Input name="cep" type="text" icon={FiMap} placeholder="Cep*" />
                 <Input name="complemento" type="text" icon={FiItalic} placeholder="Complemento" />
 
-                <Button type="submit">
-                    Salvar
-                </Button>
+
+                <ContentAlignBetween>
+                    <Link to="/all">
+                        <FiArrowLeftCircle size={20} />
+                        Voltar
+                    </Link>
+
+                    <Button type="submit">
+                        <FiCheckCircle size={20} />
+                        Salvar
+                    </Button>
+                </ContentAlignBetween>
+
             </Form>
-        </Content>
-  </Container>)
+        </Content>)
 }
 
 export default ClienteCadastro;
