@@ -11,26 +11,33 @@ export const Container = styled.div`
       margin: 40px 0;
       width: 700px;
       text-align: center;
-
        h1 {
            margin-bottom:8px;       
-       }
-      
-       a{
-           display:block;
-           color: #aaa;
-           font-weight: 500;
-           margin-top:16px;
-           transition: color 0.2s;
+       }      
+  }
+  a{
+    text-decoration: none;
+    background: #4361ee;
+    height: 56px;
+    border-radius: 10px;
+    border: 0;       
+    padding: 0 16px;
+    color: #fff;
+    font-weight: bold;
+    margin:16px 0;
+    transition: background-color 0.2s;
 
-            svg {
-                margin-right: 16px;
-            }
+    display: flex;
+    align-items: center;
+    flex-direction: row;
 
-           &:hover {
-               color: ${shade(0.2, '#aaa')}
-           }
-       }
+    &:hover {
+        background: ${shade(0.2, '#4361ee')}
+    }
+
+    svg {
+        margin-right: 16px;
+    }
   }
 `;
 

@@ -1,9 +1,10 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useEffect, useState } from 'react';
 import { FiUser, FiKey, FiItalic, FiMail, FiPhone, FiMap, FiCheckCircle, FiArrowLeftCircle } from 'react-icons/fi'
 import { Form } from '@unform/web'
 import { FormHandles } from '@unform/core'
 import * as Yup from 'yup'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useHistory, useLocation  } from 'react-router-dom'
+import queryString from 'query-string';
 
 import api from '../../../services/api'
 import { useToast } from '../../../hook/toast'
@@ -11,17 +12,38 @@ import getValidationsErrors from '../../../utils/getValidationsErrors'
 
  import { Content, ContentAlignBetween } from './styles';
 
+ import {cliente} from '../All'
  import Input from '../../../components/Input'
  import Button from '../../../components/Button'
+import { string } from 'yup/lib/locale';
 
 const ClienteCadastro: React.FC = () => {
 
+    const [clientes, setClientes] = useState<cliente>();
     const formRef = useRef<FormHandles>(null);
     const history = useHistory();
+    const {search} = useLocation();
+    const {id} = queryString.parse(search);
 
     const { addToast } = useToast()
 
-    const handleSubmit = useCallback( async (data: object) =>{
+    useEffect(()=>{   
+
+        async function loadData() {
+            console.log(id);
+            if(id){
+                const {data} = await api.get(`cliente/${id}`);
+                console.log(data);
+                if(data.length > 0){
+                    setClientes(data[0]);
+                } 
+            }
+        }
+        loadData();        
+    },[]);
+
+
+    const handleSubmit = useCallback( async (data: cliente) =>{
         try {      
             formRef.current?.setErrors({});
             const schema = Yup.object().shape({
@@ -42,14 +64,26 @@ const ClienteCadastro: React.FC = () => {
             await schema.validate(data,{
                 abortEarly: false
             });
-            
-            await api.post('cliente', data);
-
-            addToast({
-                type:'success',
-                title: 'Cadastro efetuado com sucesso!',
-                //description: 'Ocorreu o erro ao fazer o login'
-            });
+            if(id){
+                data.id = id?.toString()                
+                console.log('update')
+                console.log(data)
+                await api.put('cliente', data);   
+                
+                addToast({
+                    type:'success',
+                    title: 'Cliente editado com sucesso!',
+                });
+            }
+            else{       
+                console.log('insert')
+                console.log(data)
+                await api.post('cliente', data);            
+                addToast({
+                    type:'success',
+                    title: 'Cliente cadastrado com sucesso!',
+                });    
+            }           
 
             setTimeout(() =>{
                 history.push('/all');                
@@ -58,21 +92,21 @@ const ClienteCadastro: React.FC = () => {
             if(err instanceof Yup.ValidationError){
                 const errors = getValidationsErrors(err)         
                 formRef.current?.setErrors(errors);
-            }
-                   
-            addToast({
-                type:'error',
-                title: 'Erro ao tentar cadastrar o cliente!',
-                //description: 'Ocorreu o erro ao fazer o login'
-            });
+            } 
+            else{         
+                addToast({
+                    type:'error',
+                    title: 'Erro ao tentar salvar o cliente!',
+                    description: err.response.data.message
+                });
+            }        
         }
-
     }, [])
     
     return (
         <Content>
-            <Form ref={formRef} initialData={{}} onSubmit={handleSubmit}>
-                <h1>Cadastro de Cliente</h1>
+            <Form ref={formRef} initialData={clientes} onSubmit={handleSubmit}>
+                {id ? <h1>Edição de Cliente</h1> : <h1>Cadastro de Cliente</h1>}
 
                 <Input name="nome" type="text" icon={FiUser} placeholder="Nome*" />
                 <Input name="cpf" type="text" icon={FiKey} placeholder="CPF*" />
@@ -86,7 +120,6 @@ const ClienteCadastro: React.FC = () => {
                 <Input name="estado" type="text" icon={FiMap} placeholder="Estado*" />
                 <Input name="cep" type="text" icon={FiMap} placeholder="Cep*" />
                 <Input name="complemento" type="text" icon={FiItalic} placeholder="Complemento" />
-
 
                 <ContentAlignBetween>
                     <Link to="/all">
