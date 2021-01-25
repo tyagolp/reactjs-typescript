@@ -67,20 +67,19 @@ const ClienteCadastro: React.FC = () => {
                 
                 addToast({
                     type:'success',
-                    title: 'Cliente editado com sucesso!',
+                    title: 'Cliente editado com sucesso!'
                 });
             }
             else{       
                 await api.post('cliente', data);            
                 addToast({
                     type:'success',
-                    title: 'Cliente cadastrado com sucesso!',
+                    title: 'Cliente cadastrado com sucesso!'
                 });    
             }           
-
             setTimeout(() =>{
                 history.push('/');                
-            },2000)
+            },1000)
         } catch (err) {   
             if(err instanceof Yup.ValidationError){
                 const errors = getValidationsErrors(err)         
@@ -101,18 +100,18 @@ const ClienteCadastro: React.FC = () => {
             <Form ref={formRef} initialData={clientes} onSubmit={handleSubmit}>
                 {id ? <h1>Edição de Cliente</h1> : <h1>Cadastro de Cliente</h1>}
 
-                <Input name="nome" type="text" icon={FiUser} placeholder="Nome*" />
-                <Input name="cpf" type="text" icon={FiKey} placeholder="CPF*" />
-                <Input name="rg" type="text" icon={FiKey} placeholder="RG" />
-                <Input name="email" type="text" icon={FiMail} placeholder="E-mail" />
-                <Input name="telefone" type="text" icon={FiPhone} placeholder="Telefone" />
-                <Input name="logradouro" type="text" icon={FiMap} placeholder="Logradouro*" />
-                <Input name="numero" type="text" icon={FiMap} placeholder="Numero*" />
-                <Input name="bairro" type="text" icon={FiMap} placeholder="Bairro*" />
-                <Input name="cidade" type="text" icon={FiMap} placeholder="Cidade*" />
-                <Input name="estado" type="text" icon={FiMap} placeholder="Estado*" />
-                <Input name="cep" type="text" icon={FiMap} placeholder="Cep*" />
-                <Input name="complemento" type="text" icon={FiItalic} placeholder="Complemento" />
+                <Input name="nome" type="text" icon={FiUser} placeholder="Nome*" maxLength={100} />
+                <Input name="cpf" type="text" icon={FiKey} placeholder="CPF*" maxLength={14} />
+                <Input name="rg" type="text" icon={FiKey} placeholder="RG" maxLength={14} />
+                <Input name="email" type="text" icon={FiMail} placeholder="E-mail" maxLength={100} />
+                <Input name="telefone" type="text" icon={FiPhone} placeholder="Telefone" maxLength={20} />
+                <Input name="logradouro" type="text" icon={FiMap} placeholder="Logradouro*" maxLength={60} />
+                <Input name="numero" type="text" icon={FiMap} placeholder="Numero*" maxLength={10} />
+                <Input name="bairro" type="text" icon={FiMap} placeholder="Bairro*" maxLength={60} />
+                <Input name="cidade" type="text" icon={FiMap} placeholder="Cidade*" maxLength={50} />
+                <Input name="estado" type="text" icon={FiMap} placeholder="Estado*" maxLength={2} />
+                <Input name="cep" type="text" icon={FiMap} placeholder="Cep*" maxLength={9} />
+                <Input name="complemento" type="text" icon={FiItalic} placeholder="Complemento" maxLength={100} />
 
                 <ContentAlignBetween>
                     <Link to="/">

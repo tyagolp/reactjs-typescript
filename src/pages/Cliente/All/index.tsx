@@ -38,8 +38,6 @@ const All: React.FC = () => {
             } 
           }
           loadData();
-        //const args:cliente = {id: '1', nome:'tiago', cpf:'39148575879', bairro:'jardim p. dutra', cidade: 'guarulhos'}
-        //setClientes([...clientes, args])
     }, []);
       
     const handleRemoveCliente = useCallback(async(id:string)=>{
