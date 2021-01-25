@@ -27,6 +27,10 @@ const Table: React.FC<TableProps> = ({args, handleRemoveCliente, handleEditClien
                                     <button type="button" onClick={handleRemoveCliente.bind(this, item.id)} title="Deletar"><FiDelete size={16} /></button>
                               </td>
                         </tr>)
+                        &&
+                        <tr>
+                              <td colSpan={5}>Não há clientes Cadastrados</td>                              
+                        </tr>
                   }
             </tbody>
       </Container>

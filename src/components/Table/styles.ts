@@ -7,19 +7,11 @@ export const Container = styled.table`
     border-collapse:collapse;
 
     thead {
-
-    }
-
-    tbody{
-
-      tr {
-
-
-      }
+      font-weight:600;
     }
 
     td, th{
-      padding:8px;
+      padding:10px;
       outline: 1px solid #fff;
     }
 

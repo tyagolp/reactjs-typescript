@@ -18,7 +18,7 @@ export const Container = styled.div`
   a{
     text-decoration: none;
     background: #4361ee;
-    height: 56px;
+    height: 48px;
     border-radius: 10px;
     border: 0;       
     padding: 0 16px;
